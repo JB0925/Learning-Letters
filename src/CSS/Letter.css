@@ -1,5 +1,6 @@
 .Letter {
-    font-size: 5rem;
+    font-size: 3rem;
     cursor: pointer;
     flex-basis: 25.3333%;
+    text-align: center;
 }

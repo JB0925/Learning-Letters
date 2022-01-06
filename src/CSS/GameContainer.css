@@ -25,6 +25,7 @@
     color: white;
     background-color: dodgerblue;
     cursor: pointer;
+    margin-top: 1rem;
 }
 
 .parent button:disabled {
