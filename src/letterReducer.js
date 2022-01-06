@@ -1,3 +1,5 @@
+const MAX_CARD_AMOUNT = 10;
+
 const letterReducer = (state, { type, payload }) => {
   switch(type) {
     case "get started":
@@ -19,7 +21,7 @@ const letterReducer = (state, { type, payload }) => {
     case "plusMaxAmount":
         return {
             ...state,
-            numberOfLettersInDOM: state.numberOfLettersInDOM === 10 ? 10 : state.numberOfLettersInDOM + 1,
+            numberOfLettersInDOM: MAX_CARD_AMOUNT,
             correctLetter: payload.correctLetter,
             letters: payload.letters
         };

@@ -52,12 +52,12 @@ export default function GameContainer() {
     const newLetters = getNewLetters(numberOfLetters);
     const index = Math.floor(Math.random() * newLetters.length);
     const newCorrectLetter = newLetters[index];
-    const newDirection = DIRECTIONS[newCorrectLetter];
-    return { newLetters, newDirection, newCorrectLetter };
+    const newAudioDirection = DIRECTIONS[newCorrectLetter];
+    return { newLetters, newAudioDirection, newCorrectLetter };
   },[getNewLetters]);
 
 
-  const determineType = useCallback((currentNumberOfCards, isCorrect) => {
+  const determineActionType = useCallback((currentNumberOfCards, isCorrect) => {
     if (!isStarted) return "get started";
     if (currentNumberOfCards >= MAX_CARD_AMT && isCorrect) return "plusMaxAmount";
     if (currentNumberOfCards < MAX_CARD_AMT && isCorrect) return "plus 1";
@@ -74,12 +74,12 @@ export default function GameContainer() {
 
 
   const handleStateChanges = useCallback((currentNumberOfCards, isCorrect, timeOutLength = 3000) => {
-    const type = determineType(currentNumberOfCards, isCorrect);
+    const type = determineActionType(currentNumberOfCards, isCorrect);
     const newNumberOfCards = determineNewNumberOfCards(currentNumberOfCards, isCorrect);
 
     setTimeout(() => {
-        const { newLetters, newDirection, newCorrectLetter } = updateLettersAndGetDirections(newNumberOfCards);
-        newDirection.play();
+        const { newLetters, newAudioDirection, newCorrectLetter } = updateLettersAndGetDirections(newNumberOfCards);
+        newAudioDirection.play();
         dispatch({
           type,
           payload: {
@@ -88,7 +88,7 @@ export default function GameContainer() {
           }
         });
     }, timeOutLength);
-  },[determineNewNumberOfCards, dispatch, updateLettersAndGetDirections, determineType]);
+  },[determineNewNumberOfCards, dispatch, updateLettersAndGetDirections, determineActionType]);
 
 
   const gotFirstOneWrong = useCallback(isCorrect => !isCorrect && numberOfLettersInDOM === STARTING_CARD_AMT, [numberOfLettersInDOM]);
