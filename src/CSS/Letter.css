@@ -4,3 +4,9 @@
     flex-basis: 25.3333%;
     text-align: center;
 }
+
+@media screen and (orientation: landscape) {
+    .Letter {
+        font-size: 2rem;
+    }
+}
