@@ -35,6 +35,7 @@
 
 @media screen and (orientation: landscape) {
     .GameContainer {
-        width: 100%;
+        width: 80%;
+        justify-content: center;
     }
 }
