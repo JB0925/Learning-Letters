@@ -7,6 +7,11 @@ import Letter from "./Letter";
 import DIRECTIONS from "./AudioImports";
 
 export default function GameContainer() {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+  /* eslint-disable no-unused-vars */
+  const audioCtx = new AudioContext();
+  /* eslint-enable no-unused-vars */
   const [{ numberOfLettersInDOM, correctLetter, isStarted, letters }, dispatch] = useLetterGameContext();
 
   const LETTERS = useMemo(() => "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),[]);
