@@ -1,13 +1,8 @@
 import React from "react";
+import "../CSS/Letter.css";
 
-export default function Letter({ letter, color, topPosition, leftPosition }) {
-  return <h1 
-           style={{
-             color,
-             position: "absolute",
-             top: topPosition,
-             left: leftPosition
-           }}>
-            {letter}
-         </h1>
+function Letter({ letter, color, updateParent }) {
+  return <h1 className="Letter" style={{ color }} onClick={updateParent} >{letter}</h1>;
 };
+
+export default React.memo(Letter);

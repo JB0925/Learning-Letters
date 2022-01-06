@@ -5,13 +5,14 @@ const LetterContext = createContext();
 
 const LetterGameProvider = ({ children }) => {
   const initialState = {
-    correctInARow: 0,
     numberOfLettersInDOM: 5,
-    userSelectionMessage: ""
+    correctLetter: "",
+    isStarted: false,
+    letters: []
   };
 
   const [state, dispatch] = useReducer(letterReducer, initialState);
-  const value = { state, dispatch };
+  const value = [state, dispatch];
   return <LetterContext.Provider value={value}>{children}</LetterContext.Provider>;
 };
 

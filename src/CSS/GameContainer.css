@@ -1,0 +1,33 @@
+.GameContainer {
+    position: relative;
+    border: 1px solid lightgray;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 8px;
+    width: 50%;
+}
+
+.parent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.parent button {
+    padding: 10px;
+    font-size: 2rem;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    background-color: dodgerblue;
+    cursor: pointer;
+}
+
+.parent button:disabled {
+    background-color: rgba(30, 144, 255, 0.7);
+    cursor: auto;
+}
