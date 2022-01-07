@@ -7,11 +7,6 @@ import Letter from "./Letter";
 import DIRECTIONS from "./AudioImports";
 
 export default function GameContainer() {
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-
-  /* eslint-disable no-unused-vars */
-  const audioCtx = new AudioContext();
-  /* eslint-enable no-unused-vars */
   const [{ numberOfLettersInDOM, correctLetter, isStarted, letters }, dispatch] = useLetterGameContext();
 
   const LETTERS = useMemo(() => "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),[]);
@@ -94,6 +89,11 @@ export default function GameContainer() {
   
 
   const updateGameState = useCallback(evt => {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    /* eslint-disable no-unused-vars */
+    const audioCtx = new AudioContext();
+    /* eslint-enable no-unused-vars */
     const oops = new Audio(Oops);
     const yay = new Audio(Yay);
 
@@ -118,13 +118,21 @@ export default function GameContainer() {
     handleStateChanges(STARTING_CARD_AMT, false, 0);
   };
 
+  const handleReplay = () => {
+    const currentAudioDirection = DIRECTIONS[correctLetter];
+    currentAudioDirection.play();
+  };
+
   return (
     isStarted ?
     <div className="parent">
       <div className="GameContainer">
         {createLetterCards()}
       </div>
-      <button onClick={handleStart} disabled={isStarted}>Start</button>
+      <div className="btn-holder">
+        <button onClick={handleStart} disabled={isStarted}>Start</button>
+        <button onClick={handleReplay}>Replay</button>
+      </div>
     </div>
     :
     <div className="parent">

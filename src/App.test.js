@@ -43,14 +43,8 @@ describe("Rendering the App Component", () => {
   });
 
   it("should update the App component when the start button is clicked", async() => {
-    const value = {
-      letters: ["A", "E", "I", "O", "U"],
-      correctLetter: "E",
-      numberOfLettersInDOM: 5,
-      isStarted: true
-    };
     render(
-      <LetterGameProvider value={value}>
+      <LetterGameProvider>
         <App />
       </LetterGameProvider>
     );
@@ -61,7 +55,7 @@ describe("Rendering the App Component", () => {
     await waitFor(() => {
       expect(startButton).toBeDisabled();
     });
-    screen.debug();
+    
     const allLetters = screen.getAllByTestId("letter");
     expect(allLetters.length).toBe(5);
   });

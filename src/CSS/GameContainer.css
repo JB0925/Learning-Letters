@@ -19,7 +19,7 @@
 
 .parent button {
     padding: 10px;
-    font-size: 2rem;
+    font-size: 1.5rem;
     border-radius: 8px;
     border: none;
     color: white;
@@ -29,13 +29,26 @@
 }
 
 .parent button:disabled {
-    background-color: rgba(30, 144, 255, 0.7);
+    background-color: rgba(30, 144, 255, 0.5);
     cursor: auto;
+}
+
+.btn-holder {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 25%;
 }
 
 @media screen and (orientation: landscape) {
     .GameContainer {
         width: 80%;
         justify-content: center;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .btn-holder {
+        width: 50%;
     }
 }
