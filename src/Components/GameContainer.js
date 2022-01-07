@@ -28,9 +28,9 @@ export default function GameContainer() {
   },[COLORS]);
 
 
-  const pickLetter = useCallback(() => {
-    const index = Math.floor(Math.random() * LETTERS.length);
-    return LETTERS[index]
+  const pickLetter = useCallback((groupOfLetters = LETTERS) => {
+    const index = Math.floor(Math.random() * groupOfLetters.length);
+    return groupOfLetters[index]
   },[LETTERS]);
 
 
@@ -50,11 +50,10 @@ export default function GameContainer() {
 
   const updateLettersAndGetDirections = useCallback(numberOfLetters => {
     const newLetters = getNewLetters(numberOfLetters);
-    const index = Math.floor(Math.random() * newLetters.length);
-    const newCorrectLetter = newLetters[index];
+    const newCorrectLetter = pickLetter(newLetters)
     const newAudioDirection = DIRECTIONS[newCorrectLetter];
     return { newLetters, newAudioDirection, newCorrectLetter };
-  },[getNewLetters]);
+  },[getNewLetters, pickLetter]);
 
 
   const determineActionType = useCallback((currentNumberOfCards, isCorrect) => {
