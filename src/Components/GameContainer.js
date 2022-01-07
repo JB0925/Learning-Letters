@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { useLetterGameContext } from "../useUpdateLetters";
 import Oops from "../sounds/oops.mp3";
 import Yay from "../sounds/yay.mp3";
@@ -7,6 +7,7 @@ import Letter from "./Letter";
 import DIRECTIONS from "./AudioImports";
 
 export default function GameContainer() {
+  const gameRef = useRef();
   const [{ numberOfLettersInDOM, correctLetter, isStarted, letters }, dispatch] = useLetterGameContext();
 
   const LETTERS = useMemo(() => "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),[]);
@@ -97,13 +98,15 @@ export default function GameContainer() {
     const oops = new Audio(Oops);
     const yay = new Audio(Yay);
 
-    const { innerText } = evt.target;
-    const isCorrect = innerText === correctLetter;
+    const { innerText: userChoice } = evt.target;
+    const isCorrect = userChoice === correctLetter;
 
     if (gotFirstOneWrong(isCorrect)) return;
 
     if (isCorrect) yay.play();
     else oops.play();
+    // gameRef.current.children.style.pointerEvents = "none";
+    Array.from(gameRef.current.children).forEach(child => child.style.pointerEvents = "none");
     handleStateChanges(numberOfLettersInDOM, isCorrect);
     
   },[correctLetter, numberOfLettersInDOM, handleStateChanges, gotFirstOneWrong]);
@@ -123,10 +126,15 @@ export default function GameContainer() {
     currentAudioDirection.play();
   };
 
+  useLayoutEffect(() => {
+    gameRef.current && Array.from(gameRef.current.children)
+        .forEach(child => child.style.pointerEvents = "auto");
+  }, [letters]);
+
   return (
     isStarted ?
     <div className="parent">
-      <div className="GameContainer">
+      <div className="GameContainer" ref={gameRef}>
         {createLetterCards()}
       </div>
       <div className="btn-holder">

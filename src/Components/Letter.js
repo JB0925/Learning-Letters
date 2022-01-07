@@ -2,8 +2,9 @@ import React from "react";
 import "../CSS/Letter.css";
 
 function Letter({ letter, color, updateParent }) {
-  return <h1 className="Letter" data-testid="letter" 
-             style={{ color }} onClick={updateParent}
+  return <h1 className="Letter" data-testid="letter"
+             style={{ color, pointerEvents: "auto" }} 
+             onClick={updateParent}
         >{letter}</h1>;
 };
 
