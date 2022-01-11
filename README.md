@@ -13,6 +13,14 @@ tests that I did have time to write.
 
 This game can be viewed on [Heroku](https://obscure-earth-28578.herokuapp.com/), or with one of the options below:
 
+## Docker
+
+To view this project via docker, run the following:
+
+`docker-compose up --build` , and then visit localhost:3000.
+
+Then run `docker-compose down` to stop the running container when you are finished.
+
 ## Available Scripts
 
 In the project directory, you can run:
