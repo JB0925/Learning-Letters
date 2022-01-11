@@ -26,12 +26,32 @@ import Y from "../sounds/y.mp3";
 import Z from "../sounds/z.mp3";
 
 const DIRECTIONS = {
-    "A": new Audio(A), "B": new Audio(B), "C": new Audio(C), "D": new Audio(D), "E": new Audio(E),
-    "F": new Audio(F), "G": new Audio(G), "H": new Audio(H), "I": new Audio(I), "J": new Audio(J),
-    "K": new Audio(K), "L": new Audio(L), "M": new Audio(M), "N": new Audio(N), "O": new Audio(O),
-    "P": new Audio(P), "Q": new Audio(Q), "R": new Audio(R), "S": new Audio(S), "T": new Audio(T),
-    "U": new Audio(U), "V": new Audio(V), "W": new Audio(W), "X": new Audio(X), "Y": new Audio(Y),
-    "Z": new Audio(Z)
+  A: new Audio(A),
+  B: new Audio(B),
+  C: new Audio(C),
+  D: new Audio(D),
+  E: new Audio(E),
+  F: new Audio(F),
+  G: new Audio(G),
+  H: new Audio(H),
+  I: new Audio(I),
+  J: new Audio(J),
+  K: new Audio(K),
+  L: new Audio(L),
+  M: new Audio(M),
+  N: new Audio(N),
+  O: new Audio(O),
+  P: new Audio(P),
+  Q: new Audio(Q),
+  R: new Audio(R),
+  S: new Audio(S),
+  T: new Audio(T),
+  U: new Audio(U),
+  V: new Audio(V),
+  W: new Audio(W),
+  X: new Audio(X),
+  Y: new Audio(Y),
+  Z: new Audio(Z),
 };
 
 export default DIRECTIONS;

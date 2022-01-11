@@ -1,43 +1,42 @@
 const MAX_CARD_AMOUNT = 10;
 
 const letterReducer = (state, { type, payload }) => {
-  switch(type) {
+  switch (type) {
     case "get started":
-        return {
-            ...state,
-            correctLetter: payload.correctLetter,
-            isStarted: true,
-            letters: payload.letters
-        };
+      return {
+        ...state,
+        correctLetter: payload.correctLetter,
+        isStarted: true,
+        letters: payload.letters,
+      };
 
     case "plus 1":
-        return {
-          ...state,
-          numberOfLettersInDOM: state.numberOfLettersInDOM + 1,
-          correctLetter: payload.correctLetter,
-          letters: payload.letters
-        };
-    
+      return {
+        ...state,
+        numberOfLettersInDOM: state.numberOfLettersInDOM + 1,
+        correctLetter: payload.correctLetter,
+        letters: payload.letters,
+      };
+
     case "plusMaxAmount":
-        return {
-            ...state,
-            numberOfLettersInDOM: MAX_CARD_AMOUNT,
-            correctLetter: payload.correctLetter,
-            letters: payload.letters
-        };
-    
+      return {
+        ...state,
+        numberOfLettersInDOM: MAX_CARD_AMOUNT,
+        correctLetter: payload.correctLetter,
+        letters: payload.letters,
+      };
+
     case "minus 1":
-        return {
-            ...state,
-            numberOfLettersInDOM: state.numberOfLettersInDOM - 1,
-            correctLetter: payload.correctLetter,
-            letters: payload.letters
-        }
-    
+      return {
+        ...state,
+        numberOfLettersInDOM: state.numberOfLettersInDOM - 1,
+        correctLetter: payload.correctLetter,
+        letters: payload.letters,
+      };
+
     default:
-        throw new Error(`Unhandled action type: ${type}`);
-  };
+      throw new Error(`Unhandled action type: ${type}`);
+  }
 };
 
 export default letterReducer;
-

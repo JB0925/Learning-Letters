@@ -1,12 +1,12 @@
 .Letter {
-    font-size: 3rem;
-    cursor: pointer;
-    flex-basis: 25.3333%;
-    text-align: center;
+  cursor: pointer;
+  flex-basis: 25.3333%;
+  font-size: 3rem;
+  text-align: center;
 }
 
 @media screen and (orientation: landscape) {
-    .Letter {
-        font-size: 2rem;
-    }
+  .Letter {
+    font-size: 2rem;
+  }
 }
