@@ -146,7 +146,7 @@ export default function GameContainer() {
     ]
   );
 
-  // A helper used as a more readable of saying "there are five cards
+  // A helper used as a more readable way of saying "there are five cards
   // and the user got the first one wrong."
   const gotFirstOneWrong = useCallback(
     (isCorrect) => !isCorrect && numberOfLettersInDOM === STARTING_CARD_AMT,
