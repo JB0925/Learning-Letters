@@ -154,6 +154,10 @@
 }
 
 @media screen and (max-width: 600px) {
+  #burgerMenu {
+    top: 5%;
+  }
+
   .btn-holder {
     width: 50%;
   }

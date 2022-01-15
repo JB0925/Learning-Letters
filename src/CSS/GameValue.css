@@ -6,7 +6,7 @@
 }
 
 @media screen and (orientation: landscape) {
-  .Letter {
+  .GameValue {
     font-size: 2rem;
   }
 }
