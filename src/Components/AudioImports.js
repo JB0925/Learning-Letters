@@ -35,7 +35,7 @@ import eight from "../sounds/8.mp3";
 import nine from "../sounds/9.mp3";
 import ten from "../sounds/10.mp3";
 
-const DIRECTIONS = {
+const LETTER_DIRECTIONS = {
   A: new Audio(A),
   B: new Audio(B),
   C: new Audio(C),
@@ -77,4 +77,4 @@ const NUMBER_DIRECTIONS = {
   10: new Audio(ten),
 };
 
-export { DIRECTIONS, NUMBER_DIRECTIONS };
+export { LETTER_DIRECTIONS, NUMBER_DIRECTIONS };

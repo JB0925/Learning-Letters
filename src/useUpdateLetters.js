@@ -5,21 +5,26 @@ const LetterContext = createContext();
 
 const LetterGameProvider = ({ children }) => {
   const initialState = {
-    numberOfLettersInDOM: 5,
-    correctLetter: "",
+    numberOfValuesInDOM: 5,
+    correctValue: "",
     isStarted: false,
-    letters: []
+    values: [],
   };
 
   const [state, dispatch] = useReducer(letterReducer, initialState);
   const value = [state, dispatch];
-  return <LetterContext.Provider value={value}>{children}</LetterContext.Provider>;
+  return (
+    <LetterContext.Provider value={value}>{children}</LetterContext.Provider>
+  );
 };
 
 const useLetterGameContext = () => {
   const context = useContext(LetterContext);
-  if (!context) throw new Error("useLetterContext must be used within a LetterGameProvider");
-  
+  if (!context)
+    throw new Error(
+      "useLetterContext must be used within a LetterGameProvider"
+    );
+
   return context;
 };
 

@@ -5,40 +5,40 @@ const letterReducer = (state, { type, payload }) => {
     case "get started":
       return {
         ...state,
-        correctLetter: payload.correctLetter,
+        correctValue: payload.correctValue,
         isStarted: true,
-        letters: payload.letters,
+        values: payload.values,
       };
 
     case "plus 1":
       return {
         ...state,
-        numberOfLettersInDOM: state.numberOfLettersInDOM + 1,
-        correctLetter: payload.correctLetter,
-        letters: payload.letters,
+        numberOfValuesInDOM: state.numberOfValuesInDOM + 1,
+        correctValue: payload.correctValue,
+        values: payload.values,
       };
 
     case "plusMaxAmount":
       return {
         ...state,
-        numberOfLettersInDOM: MAX_CARD_AMOUNT,
-        correctLetter: payload.correctLetter,
-        letters: payload.letters,
+        numberOfValuesInDOM: MAX_CARD_AMOUNT,
+        correctValue: payload.correctValue,
+        values: payload.values,
       };
 
     case "minus 1":
       return {
         ...state,
-        numberOfLettersInDOM: state.numberOfLettersInDOM - 1,
-        correctLetter: payload.correctLetter,
-        letters: payload.letters,
+        numberOfValuesInDOM: state.numberOfValuesInDOM - 1,
+        correctValue: payload.correctValue,
+        values: payload.values,
       };
 
     case "switchGame":
       return {
         ...state,
-        letters: payload.letters,
-        correctLetter: payload.correctLetter,
+        values: payload.values,
+        correctValue: payload.correctValue,
       };
 
     default:
