@@ -75,6 +75,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  width: 100%;
 }
 
 .sidebar ul li {
@@ -127,6 +128,13 @@
   font-size: 2rem;
   color: dodgerblue;
   cursor: pointer;
+}
+
+#choices {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-55%);
 }
 
 @media screen and (orientation: landscape) and (max-width: 900px) {

@@ -13,6 +13,7 @@ export default function Sidebar({
         className="fas fa-window-close"
         onClick={closeSidebar}
       ></i>
+      <h3 id="choices">Choose a Game</h3>
       <ul>
         <div className="sidebar-align">
           <i className="fas fa-sort-alpha-up"></i>
