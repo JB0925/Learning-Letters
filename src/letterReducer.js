@@ -34,6 +34,13 @@ const letterReducer = (state, { type, payload }) => {
         letters: payload.letters,
       };
 
+    case "switchGame":
+      return {
+        ...state,
+        letters: payload.letters,
+        correctLetter: payload.correctLetter,
+      };
+
     default:
       throw new Error(`Unhandled action type: ${type}`);
   }

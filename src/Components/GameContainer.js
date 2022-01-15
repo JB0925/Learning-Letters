@@ -1,10 +1,16 @@
-import React, { useCallback, useLayoutEffect, useMemo, useRef } from "react";
+import React, {
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useLetterGameContext } from "../useUpdateLetters";
 import Oops from "../sounds/oops.mp3";
 import Yay from "../sounds/yay.mp3";
 import "../CSS/GameContainer.css";
 import Letter from "./Letter";
-import DIRECTIONS from "./AudioImports";
+import { DIRECTIONS, NUMBER_DIRECTIONS } from "./AudioImports";
 
 /**
  * GameContainer Component
@@ -20,18 +26,30 @@ import DIRECTIONS from "./AudioImports";
  */
 export default function GameContainer() {
   const gameRef = useRef();
+  const sidebarRef = useRef();
+  const burgerRef = useRef();
   const [
     { numberOfLettersInDOM, correctLetter, isStarted, letters },
     dispatch,
   ] = useLetterGameContext();
 
-  const LETTERS = useMemo(() => "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""), []);
+  const UPPER_LETTERS = useMemo(
+    () => "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
+    []
+  );
+  const LOWER_LETTERS = useMemo(
+    () => "abcdefghijklmnopqrstuvwxyz".split(""),
+    []
+  );
+  const NUMBERS = useMemo(() => "1 2 3 4 5 6 7 8 9 10".split(" "), []);
   const STARTING_CARD_AMT = 5;
   const MAX_CARD_AMT = 10;
   const COLORS = useMemo(
     () => ["red", "blue", "gold", "green", "purple", "orange", "lime"],
     []
   );
+
+  const [gameValues, setGameValues] = useState(UPPER_LETTERS);
 
   // A helper function used to pick a random color for the letters
   // in the DOM.
@@ -43,22 +61,22 @@ export default function GameContainer() {
   // A helper function whose job is the same as the function above,
   // except this time it picks a random letter instead of a color.
   const pickLetter = useCallback(
-    (groupOfLetters = LETTERS) => {
+    (groupOfLetters = gameValues) => {
       const index = Math.floor(Math.random() * groupOfLetters.length);
       return groupOfLetters[index];
     },
-    [LETTERS]
+    [gameValues]
   );
 
   // A helper function used to get a new group of letters after the user
   // has made their choice. Utilizes a set instead of an array due to
   // the Set's O(1) lookup time (roughly).
   const getNewLetters = useCallback(
-    (numberOfLettersToGet) => {
+    (numberOfLettersToGet, typeOfValues) => {
       const newLetters = new Set();
 
       while (newLetters.size < numberOfLettersToGet) {
-        const letter = pickLetter();
+        const letter = pickLetter(typeOfValues);
         if (!newLetters.has(letter)) {
           newLetters.add(letter);
         }
@@ -74,8 +92,8 @@ export default function GameContainer() {
   // number of letters to get as a parameter. Is used in the dispatch
   // function after a user makes their choice.
   const updateLettersAndGetDirections = useCallback(
-    (numberOfLetters) => {
-      const newLetters = getNewLetters(numberOfLetters);
+    (numberOfLetters, typeOfValues) => {
+      const newLetters = getNewLetters(numberOfLetters, typeOfValues);
       const newCorrectLetter = pickLetter(newLetters);
       const newAudioDirection = DIRECTIONS[newCorrectLetter];
       return { newLetters, newAudioDirection, newCorrectLetter };
@@ -99,8 +117,9 @@ export default function GameContainer() {
   // A helper function used to determine how many Letter Cards the user will need
   // to see for their next turn.
   const determineNewNumberOfCards = useCallback(
-    (currentNumberOfCards, isCorrect) => {
+    (currentNumberOfCards, isCorrect, differentGame) => {
       if (!isStarted) return STARTING_CARD_AMT;
+      if (differentGame) return numberOfLettersInDOM;
       if (currentNumberOfCards >= MAX_CARD_AMT && isCorrect)
         return MAX_CARD_AMT;
       if (currentNumberOfCards >= MAX_CARD_AMT && !isCorrect)
@@ -126,8 +145,12 @@ export default function GameContainer() {
       );
 
       setTimeout(() => {
-        const { newLetters, newAudioDirection, newCorrectLetter } =
+        const { newLetters, newCorrectLetter } =
           updateLettersAndGetDirections(newNumberOfCards);
+        const newAudioDirection =
+          NUMBERS.indexOf(newCorrectLetter) !== -1
+            ? NUMBER_DIRECTIONS[newCorrectLetter]
+            : DIRECTIONS[newCorrectLetter.toUpperCase()];
         newAudioDirection.play();
         dispatch({
           type,
@@ -143,7 +166,37 @@ export default function GameContainer() {
       dispatch,
       updateLettersAndGetDirections,
       determineActionType,
+      NUMBERS,
     ]
+  );
+
+  const handleGameChange = useCallback(
+    (currentNumberOfCards, isCorrect, typeOfValues, timeOutLength = 0) => {
+      const type = "switchGame";
+      const newNumberOfCards = currentNumberOfCards;
+
+      setTimeout(() => {
+        const { newLetters, newCorrectLetter } = updateLettersAndGetDirections(
+          newNumberOfCards,
+          typeOfValues
+        );
+
+        const newAudioDirection =
+          NUMBERS.indexOf(newCorrectLetter) !== -1
+            ? NUMBER_DIRECTIONS[newCorrectLetter]
+            : DIRECTIONS[newCorrectLetter.toUpperCase()];
+
+        newAudioDirection.play();
+        dispatch({
+          type,
+          payload: {
+            correctLetter: newCorrectLetter,
+            letters: newLetters,
+          },
+        });
+      }, timeOutLength);
+    },
+    [dispatch, updateLettersAndGetDirections, NUMBERS]
   );
 
   // A helper used as a more readable way of saying "there are five cards
@@ -199,14 +252,17 @@ export default function GameContainer() {
   // Calling handleStateChanges, except changing the timeout value to 0,
   // so that there is no delay on start.
   const handleStart = () => {
-    handleStateChanges(STARTING_CARD_AMT, false, 0);
+    handleStateChanges(STARTING_CARD_AMT, false, false, 0);
   };
 
   // Handles replaying the audio direction in case the user needs
   // to hear it again. Passed to a click event handler in a
   // button element.
   const handleReplay = () => {
-    const currentAudioDirection = DIRECTIONS[correctLetter];
+    const currentAudioDirection =
+      NUMBERS.indexOf(correctLetter) !== -1
+        ? NUMBER_DIRECTIONS[correctLetter]
+        : DIRECTIONS[correctLetter.toUpperCase()];
     currentAudioDirection.play();
   };
 
@@ -220,24 +276,134 @@ export default function GameContainer() {
       );
   }, [letters]);
 
+  useLayoutEffect(() => {
+    burgerRef.current.addEventListener("click", () => {
+      sidebarRef.current.classList.toggle("sidebar-open");
+    });
+
+    document.querySelectorAll("li button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        sidebarRef.current.classList.toggle("sidebar-open");
+      });
+    });
+  }, []);
+
+  const switchToUpperCase = () => {
+    setGameValues(UPPER_LETTERS);
+    handleGameChange(numberOfLettersInDOM, false, UPPER_LETTERS);
+  };
+
+  const switchToLowerCase = () => {
+    setGameValues(LOWER_LETTERS);
+    handleGameChange(numberOfLettersInDOM, false, LOWER_LETTERS);
+  };
+
+  const switchToNumbers = () => {
+    setGameValues(NUMBERS);
+    handleGameChange(numberOfLettersInDOM, false, NUMBERS);
+  };
+
+  const closeSidebar = () =>
+    sidebarRef.current.classList.toggle("sidebar-open");
+
   return isStarted ? (
-    <div className="parent">
-      <div className="GameContainer" ref={gameRef}>
-        {createLetterCards()}
+    <>
+      <i id="burgerMenu" className="fas fa-bars" ref={burgerRef}></i>
+      <div className="sidebar-parent" ref={sidebarRef}>
+        <div className="sidebar">
+          <i
+            id="closeBtn"
+            className="fas fa-window-close"
+            onClick={closeSidebar}
+          ></i>
+          <ul>
+            <div className="sidebar-align">
+              <i className="fas fa-sort-alpha-up"></i>
+              <li>
+                <button type="button" onClick={switchToUpperCase}>
+                  Uppercase
+                </button>
+              </li>
+            </div>
+            <div className="sidebar-align">
+              <i className="fas fa-sort-alpha-down"></i>
+              <li>
+                <button type="button" onClick={switchToLowerCase}>
+                  Lowercase
+                </button>
+              </li>
+            </div>
+            <div className="sidebar-align">
+              <i className="fas fa-sort-numeric-down"></i>
+              <li>
+                <button type="button" onClick={switchToNumbers}>
+                  Numbers
+                </button>
+              </li>
+            </div>
+          </ul>
+        </div>
       </div>
-      <div className="btn-holder">
+      <div className="parent">
+        <div className="GameContainer" ref={gameRef}>
+          {createLetterCards()}
+        </div>
+        <div className="btn-holder">
+          <button onClick={handleStart} disabled={isStarted}>
+            Start
+          </button>
+          <button onClick={handleReplay}>Replay</button>
+        </div>
+      </div>
+    </>
+  ) : (
+    <>
+      <i id="burgerMenu" className="fas fa-bars" ref={burgerRef}></i>
+      <div className="sidebar-parent" ref={sidebarRef}>
+        <div className="sidebar">
+          <i
+            id="closeBtn"
+            className="fas fa-window-close"
+            onClick={closeSidebar}
+          ></i>
+          <ul>
+            <div className="sidebar-align">
+              <i className="fas fa-sort-alpha-up"></i>
+              <li>
+                <button type="button" onClick={switchToUpperCase}>
+                  Uppercase
+                </button>
+              </li>
+            </div>
+            <div className="sidebar-align">
+              <i className="fas fa-sort-alpha-down"></i>
+              <li>
+                <button type="button" onClick={switchToLowerCase}>
+                  Lowercase
+                </button>
+              </li>
+            </div>
+            <div className="sidebar-align">
+              <i className="fas fa-sort-numeric-down"></i>
+              <li>
+                <button type="button" onClick={switchToNumbers}>
+                  Numbers
+                </button>
+              </li>
+            </div>
+          </ul>
+        </div>
+      </div>
+      <div className="parent">
+        <div
+          ref={gameRef}
+          className="GameContainer"
+          style={{ border: "none" }}
+        ></div>
         <button onClick={handleStart} disabled={isStarted}>
           Start
         </button>
-        <button onClick={handleReplay}>Replay</button>
       </div>
-    </div>
-  ) : (
-    <div className="parent">
-      <div className="GameContainer" style={{ border: "none" }}></div>
-      <button onClick={handleStart} disabled={isStarted}>
-        Start
-      </button>
-    </div>
+    </>
   );
 }

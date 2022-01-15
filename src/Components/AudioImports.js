@@ -24,6 +24,16 @@ import W from "../sounds/w.mp3";
 import X from "../sounds/x.mp3";
 import Y from "../sounds/y.mp3";
 import Z from "../sounds/z.mp3";
+import one from "../sounds/1.mp3";
+import two from "../sounds/2.mp3";
+import three from "../sounds/3.mp3";
+import four from "../sounds/4.mp3";
+import five from "../sounds/5.mp3";
+import six from "../sounds/6.mp3";
+import seven from "../sounds/7.mp3";
+import eight from "../sounds/8.mp3";
+import nine from "../sounds/9.mp3";
+import ten from "../sounds/10.mp3";
 
 const DIRECTIONS = {
   A: new Audio(A),
@@ -54,4 +64,17 @@ const DIRECTIONS = {
   Z: new Audio(Z),
 };
 
-export default DIRECTIONS;
+const NUMBER_DIRECTIONS = {
+  1: new Audio(one),
+  2: new Audio(two),
+  3: new Audio(three),
+  4: new Audio(four),
+  5: new Audio(five),
+  6: new Audio(six),
+  7: new Audio(seven),
+  8: new Audio(eight),
+  9: new Audio(nine),
+  10: new Audio(ten),
+};
+
+export { DIRECTIONS, NUMBER_DIRECTIONS };
